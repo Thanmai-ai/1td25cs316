@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111313">
+  <meta name="description" content="Build what matters at CODE//FEST, a 24-hour student hackathon. January 23–24, 2027.">
+  <title>CODE//FEST 2027 — Make it matter</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #f5f4ed;
+      background: #111313;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --ink: #111313;
+      --panel: #191c1b;
+      --line: #343836;
+      --muted: #9da49e;
+      --lime: #d3ff63;
+      --orange: #ff744d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body { min-width: 320px; margin: 0; }
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    .wrap { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+
+    .topbar {
+      position: sticky;
+      z-index: 5;
+      top: 0;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      background: rgba(17,19,19,.9);
+      backdrop-filter: blur(14px);
+    }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 850; letter-spacing: -.04em; }
+    .brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 9px; color: var(--ink); background: var(--lime); font-size: 15px; }
+    .brand span:last-child em { color: var(--lime); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 29px; }
+    .nav-links a { color: #c2c7c1; text-decoration: none; font-size: 12px; font-weight: 650; transition: color .18s ease; }
+    .nav-links a:hover { color: var(--lime); }
+    .nav-links .nav-cta { padding: 11px 15px; border: 1px solid #53633a; border-radius: 7px; color: var(--lime); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 620px;
+      display: grid;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(ellipse at 76% 44%, rgba(137,169,61,.13), transparent 34%),
+        linear-gradient(180deg, #141716 0%, #111313 100%);
+    }
+    .hero::after {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(90deg, transparent, #000 60%, #000);
+      content: "";
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; padding-block: 86px 74px; }
+    .hero-copy { max-width: 680px; }
+    .overline { display: flex; align-items: center; gap: 9px; margin: 0 0 23px; color: var(--lime); font-size: 10px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 12px rgba(211,255,99,.8); }
+    h1 { margin: 0; font-size: clamp(58px, 9.5vw, 112px); font-weight: 900; line-height: .84; letter-spacing: -.085em; }
+    h1 span { color: var(--lime); }
+    .hero-lead { max-width: 480px; margin: 24px 0 0; color: #bec4bc; font-size: 16px; line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 32px; }
+    .button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; gap: 10px; padding: 0 18px; border: 1px solid transparent; border-radius: 7px; text-decoration: none; font-size: 12px; font-weight: 800; transition: transform .18s ease, background .18s ease; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: var(--ink); background: var(--lime); }
+    .button-primary:hover { background: #e0ff91; }
+    .button-quiet { color: #e4e6df; border-color: #444a45; }
+    .button-quiet:hover { background: #202421; }
+    .arrow { font-size: 16px; line-height: 1; }
+    .hero-stamp {
+      position: absolute;
+      z-index: 1;
+      right: max(4%, calc((100% - 1120px)/2));
+      bottom: 86px;
+      width: 175px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(211,255,99,.45);
+      border-radius: 50%;
+      color: var(--lime);
+      text-align: center;
+      transform: rotate(9deg);
+    }
+    .hero-stamp::before { position: absolute; inset: 9px; border: 1px dashed rgba(211,255,99,.35); border-radius: 50%; content: ""; }
+    .stamp-inner { position: relative; }
+    .stamp-inner strong { display: block; font-size: 34px; letter-spacing: -.08em; }
+    .stamp-inner span { font-size: 9px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+
+    .event-strip { border-bottom: 1px solid var(--line); background: #171a18; }
+    .event-facts { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .fact { min-height: 94px; display: flex; flex-direction: column; justify-content: center; padding: 16px 27px; border-right: 1px solid var(--line); }
+    .fact:first-child { padding-left: 0; }
+    .fact:last-child { border-right: 0; }
+    .fact-label { margin-bottom: 7px; color: #858e86; font-size: 9px; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+    .fact-value { font-size: 14px; font-weight: 750; }
+
+    .section { padding-block: 96px; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 35px; }
+    .section-kicker { margin: 0 0 12px; color: var(--orange); font-size: 10px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    h2 { margin: 0; font-size: clamp(32px, 5vw, 49px); line-height: 1; letter-spacing: -.06em; }
+    .section-intro { max-width: 385px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .tracks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .track-card { position: relative; min-height: 220px; padding: 23px; overflow: hidden; border: 1px solid #303633; border-radius: 10px; background: linear-gradient(145deg, #1b1f1d, #171a19); transition: border-color .2s ease, transform .2s ease; }
+    .track-card:hover { transform: translateY(-3px); border-color: #66734d; }
+    .track-number { color: #778071; font-size: 10px; font-weight: 750; letter-spacing: .1em; }
+    .track-icon { position: absolute; top: 19px; right: 21px; display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #3b433c; border-radius: 10px; color: var(--lime); font-size: 18px; }
+    .track-card h3 { margin: 44px 0 8px; font-size: 17px; letter-spacing: -.03em; }
+    .track-card p { max-width: 270px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .track-tag { display: inline-block; margin-top: 17px; color: #bacd8f; font-size: 9px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+
+    .prize-section { background: #171a18; border-block: 1px solid var(--line); }
+    .prize-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: center; }
+    .prize-copy p:last-child { max-width: 340px; margin: 18px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .prize-list { border-top: 1px solid #3a3f3b; }
+    .prize-row { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 15px; padding: 19px 0; border-bottom: 1px solid #3a3f3b; }
+    .prize-medal { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 50%; color: var(--ink); background: var(--lime); font-size: 12px; font-weight: 900; }
+    .prize-row:nth-child(2) .prize-medal { color: #eee; background: #555d58; }
+    .prize-row:nth-child(3) .prize-medal { color: #fff1d2; background: #80523e; }
+    .prize-place { font-size: 13px; font-weight: 750; }
+    .prize-detail { display: block; margin-top: 4px; color: #939b94; font-size: 10px; }
+    .prize-amount { color: var(--lime); font-size: 20px; font-weight: 850; letter-spacing: -.04em; }
+    .prize-note { margin: 14px 0 0; color: #79817a; font-size: 10px; }
+
+    .guidelines-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 70px; }
+    .guidelines-copy { position: sticky; top: 105px; align-self: start; }
+    .guidelines-copy p:last-child { max-width: 330px; margin: 18px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .rules { margin: 0; padding: 0; list-style: none; counter-reset: rules; }
+    .rules li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding: 17px 0; border-top: 1px solid var(--line); counter-increment: rules; }
+    .rules li::before { content: "0" counter(rules); color: var(--lime); font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+    .rules strong { display: block; margin-bottom: 5px; font-size: 12px; }
+    .rules span { display: block; color: var(--muted); font-size: 11px; line-height: 1.65; }
+
+    .register-section { padding-block: 84px; background: #d3ff63; color: var(--ink); }
+    .register-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 62px; align-items: start; }
+    .register-copy .section-kicker { color: #495c1e; }
+    .register-copy h2 { max-width: 380px; }
+    .register-copy > p:last-child { max-width: 330px; margin: 17px 0 0; color: #455232; font-size: 13px; line-height: 1.7; }
+    .register-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 24px; border: 1px solid rgba(17,19,19,.18); border-radius: 11px; background: rgba(255,255,255,.28); }
+    .form-field { display: flex; flex-direction: column; gap: 7px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 10px; font-weight: 800; }
+    .form-field input, .form-field select { width: 100%; min-height: 43px; padding: 0 12px; border: 1px solid rgba(17,19,19,.2); border-radius: 6px; outline: none; color: var(--ink); background: rgba(255,255,255,.64); font-size: 12px; }
+    .form-field input::placeholder { color: #66714e; }
+    .form-field input:focus, .form-field select:focus { border-color: #263217; box-shadow: 0 0 0 3px rgba(38,50,23,.12); }
+    .form-submit { min-height: 45px; grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border: 0; border-radius: 6px; color: #f8f8ef; background: var(--ink); font-size: 12px; font-weight: 800; cursor: pointer; transition: background .18s ease; }
+    .form-submit:hover { background: #292e28; }
+    .form-status { min-height: 18px; grid-column: 1 / -1; margin: 0; color: #34441f; font-size: 11px; line-height: 1.6; }
+    .form-disclaimer { grid-column: 1 / -1; margin: 0; color: #53613d; font-size: 10px; line-height: 1.55; }
+
+    footer { padding-block: 25px; color: #9ba29b; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer-inner p { margin: 0; font-size: 10px; }
+    .footer-inner a { color: var(--lime); font-size: 10px; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 36px, 560px); }
+      .nav { min-height: 64px; }
+      .nav-links { gap: 15px; }
+      .nav-links a { font-size: 10px; }
+      .nav-links a:nth-child(2), .nav-links a:nth-child(3) { display: none; }
+      .hero { min-height: 570px; }
+      .hero-content { padding-block: 72px 140px; }
+      .hero-stamp { right: 30px; bottom: 25px; width: 115px; }
+      .stamp-inner strong { font-size: 25px; }
+      .stamp-inner span { font-size: 7px; }
+      .event-facts { grid-template-columns: 1fr; padding-block: 8px; }
+      .fact, .fact:first-child { min-height: 62px; padding: 11px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+      .fact:last-child { border-bottom: 0; }
+      .fact-label { margin-bottom: 4px; }
+      .section { padding-block: 70px; }
+      .section-heading { align-items: start; flex-direction: column; gap: 15px; }
+      .tracks { grid-template-columns: repeat(2, 1fr); }
+      .prize-layout, .guidelines-grid, .register-layout { grid-template-columns: 1fr; gap: 32px; }
+      .guidelines-copy { position: static; }
+      .register-section { padding-block: 65px; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { gap: 11px; }
+      .nav-links .nav-cta { padding: 9px 10px; }
+      .hero { min-height: 550px; }
+      .hero-lead { max-width: 350px; font-size: 14px; }
+      .hero-actions { gap: 10px; }
+      .button { padding-inline: 13px; font-size: 10px; }
+      .tracks { grid-template-columns: 1fr; }
+      .track-card { min-height: 190px; }
+      .prize-row { grid-template-columns: 45px 1fr auto; gap: 9px; }
+      .prize-amount { font-size: 16px; }
+      .register-form { grid-template-columns: 1fr; padding: 18px; }
+      .form-field.full, .form-submit, .form-status, .form-disclaimer { grid-column: auto; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="CODE FEST home">
+        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+        <span>CODE<em>//</em>FEST <span style="color:#9da49e;font-weight:600">2027</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#tracks">Tracks</a>
+        <a href="#prizes">Prizes</a>
+        <a href="#guidelines">Guidelines</a>
+        <a class="nav-cta" href="#register">Register <span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-content wrap">
+        <div class="hero-copy">
+          <p class="overline"><span class="live-dot" aria-hidden="true"></span> A 24-hour student hackathon</p>
+          <h1>MAKE IT<br><span>MATTER.</span></h1>
+          <p class="hero-lead">One weekend. Big ideas. Real-world builds. Bring your people and make something the world needs.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#register">Save your team a spot <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="#tracks">Explore the tracks <span class="arrow" aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stamp" aria-label="January 23 to 24, 2027">
+        <div class="stamp-inner"><strong>24<span style="font-size:15px">H</span></strong><span>Makeathon<br>Jan 23—24</span></div>
+      </div>
+    </section>
+
+    <section class="event-strip" aria-label="Event details">
+      <div class="event-facts wrap">
+        <div class="fact"><span class="fact-label">When</span><span class="fact-value">Jan 23–24, 2027 · Saturday to Sunday</span></div>
+        <div class="fact"><span class="fact-label">Where</span><span class="fact-value">Your campus · Venue to be announced</span></div>
+        <div class="fact"><span class="fact-label">Who can join</span><span class="fact-value">College students · Teams of 2–4</span></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="tracks">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Pick a problem worth solving</p>
+          <h2>Choose your track.</h2>
+        </div>
+        <p class="section-intro">Build in a space you care about. These tracks are starting points—unexpected ideas are always welcome.</p>
+      </div>
+      <div class="tracks">
+        <article class="track-card">
+          <span class="track-number">TRACK 01</span><span class="track-icon" aria-hidden="true">✳</span>
+          <h3>AI for good</h3><p>Make AI more useful, fair, and human—from learning tools to accessible services.</p><span class="track-tag">Artificial intelligence</span>
+        </article>
+        <article class="track-card">
+          <span class="track-number">TRACK 02</span><span class="track-icon" aria-hidden="true">⌁</span>
+          <h3>Climate &amp; sustainability</h3><p>Rethink energy, waste, food, and the everyday choices shaping our planet.</p><span class="track-tag">Climate tech</span>
+        </article>
+        <article class="track-card">
+          <span class="track-number">TRACK 03</span><span class="track-icon" aria-hidden="true">⌂</span>
+          <h3>Health &amp; wellbeing</h3><p>Design thoughtful digital experiences for healthier, happier communities.</p><span class="track-tag">Health tech</span>
+        </article>
+        <article class="track-card">
+          <span class="track-number">TRACK 04</span><span class="track-icon" aria-hidden="true">◫</span>
+          <h3>Future of learning</h3><p>Help more people learn, teach, and find their next opportunity.</p><span class="track-tag">EdTech</span>
+        </article>
+        <article class="track-card">
+          <span class="track-number">TRACK 05</span><span class="track-icon" aria-hidden="true">⌘</span>
+          <h3>Open innovation</h3><p>Got a problem that does not fit a box? Bring your own bold idea.</p><span class="track-tag">Wildcard</span>
+        </article>
+        <article class="track-card">
+          <span class="track-number">TRACK 06</span><span class="track-icon" aria-hidden="true">◎</span>
+          <h3>Smart campus</h3><p>Make campus life safer, simpler, and more connected for every student.</p><span class="track-tag">Civic &amp; campus tech</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section prize-section" id="prizes">
+      <div class="prize-layout wrap">
+        <div class="prize-copy">
+          <p class="section-kicker">Build boldly. Get rewarded.</p>
+          <h2>Good ideas<br>go places.</h2>
+          <p>Win for your build, your impact, and the way your team brings an idea to life. Every finalist gets feedback from our judging panel.</p>
+        </div>
+        <div>
+          <div class="prize-list" aria-label="Proposed prizes">
+            <div class="prize-row"><span class="prize-medal">01</span><span class="prize-place">1st place <span class="prize-detail">Winning team · Best overall project</span></span><span class="prize-amount">₹50,000</span></div>
+            <div class="prize-row"><span class="prize-medal">02</span><span class="prize-place">2nd place <span class="prize-detail">Runner-up team</span></span><span class="prize-amount">₹25,000</span></div>
+            <div class="prize-row"><span class="prize-medal">03</span><span class="prize-place">3rd place <span class="prize-detail">Third-place team</span></span><span class="prize-amount">₹10,000</span></div>
+          </div>
+          <p class="prize-note">Prize amounts are illustrative proposals and subject to organizer confirmation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="guidelines">
+      <div class="guidelines-grid">
+        <div class="guidelines-copy">
+          <p class="section-kicker">A few ground rules</p>
+          <h2>Make stuff.<br>Be good humans.</h2>
+          <p>Keep it fair, collaborative, and welcoming. We will share the final event handbook with registered teams before the event.</p>
+        </div>
+        <ol class="rules">
+          <li><div><strong>Build during the event</strong><span>Start a new project when the hackathon begins. You may use existing open-source libraries, APIs, and tools—credit them clearly.</span></div></li>
+          <li><div><strong>Teams of 2–4 students</strong><span>All team members must be currently enrolled college students. Each person may join one team only.</span></div></li>
+          <li><div><strong>Make it yours</strong><span>Your submission must be your team's original work. Do not copy another team's project or submit work you do not have permission to use.</span></div></li>
+          <li><div><strong>Submit on time</strong><span>Share a working demo, source-code link, and short project description before the announced deadline.</span></div></li>
+          <li><div><strong>Be respectful and safe</strong><span>Follow the event code of conduct, respect other participants, and use data and AI responsibly.</span></div></li>
+          <li><div><strong>Show the impact</strong><span>Judges will look at usefulness, originality, technical execution, and the clarity of your presentation.</span></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="register-section" id="register">
+      <div class="register-layout wrap">
+        <div class="register-copy">
+          <p class="section-kicker">Your idea starts here</p>
+          <h2>Bring your team. Leave with a story.</h2>
+          <p>Tell us who you are and what you want to build. Registration is open to college students in teams of 2–4.</p>
+        </div>
+        <form class="register-form" id="registration-form">
+          <div class="form-field"><label for="team-name">Team name</label><input id="team-name" name="team-name" autocomplete="organization" placeholder="Give your team a name" required></div>
+          <div class="form-field"><label for="leader-name">Team lead</label><input id="leader-name" name="leader-name" autocomplete="name" placeholder="Your full name" required></div>
+          <div class="form-field"><label for="email">College email</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@college.edu" required></div>
+          <div class="form-field"><label for="team-size">Team size</label><select id="team-size" name="team-size" required><option value="" disabled selected>Select size</option><option value="2">2 students</option><option value="3">3 students</option><option value="4">4 students</option></select></div>
+          <div class="form-field full"><label for="track">Project track</label><select id="track" name="track" required><option value="" disabled selected>Choose your first-choice track</option><option>AI for good</option><option>Climate &amp; sustainability</option><option>Health &amp; wellbeing</option><option>Future of learning</option><option>Open innovation</option><option>Smart campus</option></select></div>
+          <button class="form-submit" type="submit">Register your interest <span aria-hidden="true">↗</span></button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          <p class="form-disclaimer">Demo registration form: your details are not sent or saved. Connect an event registration service before publishing.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner wrap">
+      <p>© 2027 CODE//FEST · Made for students who build.</p>
+      <a href="mailto:events@college.edu">Questions? Contact the organizers ↗</a>
+    </div>
+  </footer>
+  <script>
+    const registrationForm = document.querySelector("#registration-form");
+    const formStatus = document.querySelector("#form-status");
+
+    registrationForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      formStatus.textContent = "Thanks for your interest! This preview does not send registrations yet—please contact the organizers to confirm your place.";
+      registrationForm.reset();
+    });
+  </script>
+</body>
+</html>
